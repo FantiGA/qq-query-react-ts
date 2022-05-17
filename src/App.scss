@@ -1,0 +1,16 @@
+.container {
+  display        : flex;
+  justify-content: center;
+}
+
+.wrapper {
+  display       : flex;
+  flex-direction: column;
+  width         : 300px;
+  text-align    : left;
+}
+
+.loading {
+  color     : #00f;
+  visibility: hidden;
+}
