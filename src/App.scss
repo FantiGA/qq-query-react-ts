@@ -10,7 +10,64 @@
   text-align    : left;
 }
 
+form {
+  margin-bottom: 20px;
+  font-size    : 18px;
+
+  label {
+    vertical-align: middle;
+
+    input {
+      font-size  : 18px;
+      line-height: 120%;
+      padding    : 5px;
+      margin-left: 5px;
+      width      : 250px;
+    }
+  }
+}
+
+.input-qq {
+  border-top   : none;
+  border-left  : none;
+  border-right : none;
+  border-bottom: 1px solid #000;
+}
+
+.resultBox {
+  border          : 1px solid #000;
+  border-radius   : 10px;
+  padding         : 5px;
+  background-color: #eee;
+  display         : flex;
+  flex-direction  : row;
+
+  img {
+    border-radius: 100%;
+    width        : 64px;
+    height       : 64px;
+  }
+
+  dl {
+    display        : flex;
+    flex-direction : column;
+    font-size      : 18px;
+    margin         : 0 0 0 10px;
+    justify-content: space-around;
+  }
+
+  dt,
+  dd {
+    margin: 0;
+  }
+}
+
 .loading {
   color     : #00f;
+  visibility: hidden;
+}
+
+.errorMsg {
+  color     : #f00;
   visibility: hidden;
 }
