@@ -1,57 +1,88 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-17 15:35:26
- * @LastEditTime: 2022-05-20 11:45:44
+ * @LastEditTime: 2022-05-23 17:56:16
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/App.tsx
  */
 
-import React, { useState } from 'react'
-import "./App.scss"
+import React, { useState, useEffect } from 'react'
+import Query from './components/Query'
+import Result from './components/Result'
+import request from './utils/request'
+import { TInputQQ, IResult } from './utils/interface'
 
-import qqQuery from './utils/request'
+import './App.scss'
 
 export default function App() {
-    const [data, setData] = useState({ qq: '', name: '', qlogo: '' })
+    // 设置输入参数
+    const [param, setParam] = useState<TInputQQ>({ inputQq: '' })
+    // 设置查询信息
+    const [info, setInfo] = useState<IResult>({ code: 0, message: '', statusCode: 200, success: false, })
+    // 设置loading
+    const [loading, setLoading] = useState(true)
+    // 设置API URL
+    const url = 'https://api.uomg.com/api/qq.info'
 
-    const inputHandler = (params: { inputQq: string }): void => {
-        const { inputQq } = params
-        queryHandler(inputQq)
+
+    // 防抖副作用函数
+    const useDebouncedEffect = (fn: Function, ms: number, deps: Array<TInputQQ>) => {
+        useEffect(() => {
+            let clean: Function | null = null
+            const timer = setTimeout(() => {
+                clean = fn()
+            }, ms)
+            return () => {
+                clearTimeout(timer)
+                if (clean) clean()
+            }
+        }, deps)
     }
 
-    const queryHandler = async (inputQq: string) => {
-        qqQuery(inputQq).then(data => {
-            const { qq, name, qlogo } = data
-            setData({ qq, name, qlogo })
-        });
+    const getQQInfo = ({ inputQq }: TInputQQ) => {
+        /**
+         * 虽然input已加type='number'属性，理论上只能输入数字，
+         * 但是安全起见，请求前仍然做一个非数字判断。
+         */
+        if (inputQq && /\D/g.test(inputQq)) {
+            console.log('已屏蔽非数字')
+            setParam({
+                inputQq: inputQq.replace(/[^0-9]/g, '')
+            })
+            return false
+        }
+
+        setLoading(true)
+
+        request({
+            url: `${url}?qq=${inputQq}`,
+            method: 'get',
+        }).then(res => {
+            setInfo(res)
+            setLoading(false)
+        }).catch(e => {
+            console.log(e)
+            setLoading(false)
+        })
     }
+
+    useDebouncedEffect(() => getQQInfo(param), 500, [param])
 
     return (
         <div className='container'>
             <div className='wrapper'>
-                <form action=''>
-                    <h1>QQ号查询</h1>
-                    <label>QQ<input
-                        className='input-qq'
-                        type='number'
-                        min='10000'
-                        placeholder='输入QQ号码'
-                        onChange={event => inputHandler({
-                            inputQq: event.target.value
-                        })}
-                    /></label>
-                </form>
+                <Query param={param!} setParam={setParam} />
                 <div>
-                    <div className='loading' id='loading'>Loading...</div>
-                    <div className='errorMsg' id='errorMsg'>Error</div>
-                    <div className='resultBox' id='resultBox'>
-                        <img src={data.qlogo} />
-                        <dl>
-                            <dt>{data.name}</dt>
-                            <dd>{data.qq}</dd>
-                        </dl>
-                    </div>
+                    {
+                        loading ?
+                            <div className='loading'>Loading...</div> :
+                            (
+                                info.code !== 1 ?
+                                    <div className='errorMsg'>Error: {info.message}</div> :
+                                    <Result info={info} />
+                            )
+                    }
                 </div>
             </div>
         </div>
