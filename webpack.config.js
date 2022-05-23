@@ -177,7 +177,16 @@ const config = {
             // 导入manifest文件
             manifest: path.resolve(__dirname, 'public', 'manifest.json'),
         })
-    ]
+    ],
+    // 性能提示
+    performance: {
+        // 打开/关闭提示
+        hints: false,
+        // 何时根据最大入口点大小（以字节为单位）发出性能提示
+        maxEntrypointSize: 512000,
+        // 何时根据单个资产大小（以字节为单位）发出性能提示
+        maxAssetSize: 512000,
+    },
 };
 
 module.exports = config;
