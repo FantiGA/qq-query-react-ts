@@ -1,7 +1,7 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-23 16:30:01
- * @LastEditTime: 2022-05-23 17:40:56
+ * @LastEditTime: 2022-05-26 15:55:14
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/components/Result/index.tsx
@@ -18,7 +18,7 @@ const Result = (props: IQQInfo) => {
     const { name = '', qlogo = '', qq = '' } = info
 
     return (
-        <div className='resultBox' id='resultBox'>
+        <div className='resultBox'>
             <img src={qlogo} />
             <dl>
                 <dt>{name}</dt>

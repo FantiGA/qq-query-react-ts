@@ -1,15 +1,16 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-17 15:35:26
- * @LastEditTime: 2022-05-23 17:56:16
+ * @LastEditTime: 2022-05-26 16:12:15
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/App.tsx
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Query from './components/Query'
 import Result from './components/Result'
+import { useDebouncedEffect } from './utils/common'
 import request from './utils/request'
 import { TInputQQ, IResult } from './utils/interface'
 
@@ -25,20 +26,6 @@ export default function App() {
     // 设置API URL
     const url = 'https://api.uomg.com/api/qq.info'
 
-
-    // 防抖副作用函数
-    const useDebouncedEffect = (fn: Function, ms: number, deps: Array<TInputQQ>) => {
-        useEffect(() => {
-            let clean: Function | null = null
-            const timer = setTimeout(() => {
-                clean = fn()
-            }, ms)
-            return () => {
-                clearTimeout(timer)
-                if (clean) clean()
-            }
-        }, deps)
-    }
 
     const getQQInfo = ({ inputQq }: TInputQQ) => {
         /**
@@ -77,11 +64,9 @@ export default function App() {
                     {
                         loading ?
                             <div className='loading'>Loading...</div> :
-                            (
-                                info.code !== 1 ?
-                                    <div className='errorMsg'>Error: {info.message}</div> :
-                                    <Result info={info} />
-                            )
+                            info.code !== 1 ?
+                                <div className='errorMsg'>Error: {info.message}</div> :
+                                <Result info={info} />
                     }
                 </div>
             </div>

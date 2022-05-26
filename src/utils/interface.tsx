@@ -1,14 +1,13 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-23 16:42:43
- * @LastEditTime: 2022-05-23 17:49:31
+ * @LastEditTime: 2022-05-26 15:58:35
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/utils/interface.tsx
  */
 
-
-export type TAxiosOption = {
+type TAxiosOption = {
     url: string,
     method: string,
     timeout?: 5000,
@@ -16,16 +15,16 @@ export type TAxiosOption = {
     headers?: {},
 }
 
-export type TInputQQ = {
+type TInputQQ = {
     inputQq: string
 }
 
-export interface IInput {
+interface IInput {
     param: TInputQQ,
     setParam: Function,
 }
 
-export type IResult = {
+type IResult = {
     name?: string,
     qlogo?: string,
     qq?: string,
@@ -36,6 +35,8 @@ export type IResult = {
     lvzuan?: object,
 }
 
-export interface IQQInfo {
+interface IQQInfo {
     info: IResult
 }
+
+export { TAxiosOption, TInputQQ, IInput, IResult, IQQInfo }
