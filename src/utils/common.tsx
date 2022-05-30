@@ -1,7 +1,7 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-23 10:57:05
- * @LastEditTime: 2022-05-26 16:11:00
+ * @LastEditTime: 2022-05-30 15:40:34
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/utils/common.tsx
@@ -24,18 +24,14 @@ const delay = (time = 1000) => {
  * @param {*} fn 执行函数
  * @param {*} wait 防抖时间
  */
-const debonce = (fn: Function, wait: number) => {
+const debounce = <P extends any[]>(fn: Function, wait: number) => {
     let timer: number | null = null
-    return function (this: any) {
-        let context = this, args = arguments
-        if (timer) {
-            clearTimeout(timer)
-            timer = null
-        } else {
-            timer = window.setTimeout(() => {
-                fn.apply(context, args)
-            }, wait)
-        }
+    return function (this: P) {
+        let args: IArguments = arguments
+        if (timer) clearTimeout(timer)
+        timer = window.setTimeout(() => {
+            fn.apply(this, args)
+        }, wait)
     }
 }
 
@@ -53,4 +49,4 @@ const useDebouncedEffect = (fn: Function, ms: number, deps: Array<TInputQQ>) => 
     }, deps)
 }
 
-export { delay, debonce, useDebouncedEffect }
+export { delay, debounce, useDebouncedEffect }

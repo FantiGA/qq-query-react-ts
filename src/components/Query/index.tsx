@@ -1,14 +1,14 @@
 /*
  * @Author: fantiga
  * @Date: 2022-05-23 10:53:11
- * @LastEditTime: 2022-05-23 17:40:21
+ * @LastEditTime: 2022-05-30 15:36:54
  * @LastEditors: fantiga
  * @Description: 
  * @FilePath: /react-qq-query-ts/src/components/Query/index.tsx
  */
 
 import React from 'react'
-import { debonce } from '../../utils/common'
+import { debounce } from '../../utils/common'
 import { IInput } from '../../utils/interface'
 
 import './index.scss'
@@ -24,7 +24,7 @@ const Query = (props: IInput) => {
             min='10000'
             placeholder='输入QQ号码'
             value={param.inputQq}
-            onChange={event => debonce(setParam({
+            onChange={event => debounce(setParam({
                 ...param,
                 inputQq: event.target.value
             }), 5000)}
